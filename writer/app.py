@@ -15,7 +15,6 @@ REDIS_RDB_PORT = int(os.environ.get("REDIS_RDB_PORT", 6379))
 REDIS_AOF_HOST = os.environ.get("REDIS_AOF_HOST", "redis-aof")
 REDIS_AOF_PORT = int(os.environ.get("REDIS_AOF_PORT", 6379))
 
-# Initialize connections
 beanstalk = beanstalkc.Connection(host=BEANSTALKD_HOST, port=BEANSTALKD_PORT)
 redis_rdb = redis.Redis(host=REDIS_RDB_HOST, port=REDIS_RDB_PORT)
 redis_aof = redis.Redis(host=REDIS_AOF_HOST, port=REDIS_AOF_PORT)
@@ -24,7 +23,6 @@ redis_aof = redis.Redis(host=REDIS_AOF_HOST, port=REDIS_AOF_PORT)
 def write_beanstalkd():
     data = request.get_json() or {}
     message = data.get('message', 'Hello from beanstalkd')
-    # Put the message in the default tube
     beanstalk.put(message)
     return jsonify({'status': 'success', 'queue': 'beanstalkd', 'message': message})
 
@@ -32,7 +30,6 @@ def write_beanstalkd():
 def write_redis_rdb():
     data = request.get_json() or {}
     message = data.get('message', 'Hello from redis rdb')
-    # Push the message onto a Redis list called 'queue_rdb'
     redis_rdb.lpush('queue_rdb', message)
     return jsonify({'status': 'success', 'queue': 'redis_rdb', 'message': message})
 
@@ -40,7 +37,6 @@ def write_redis_rdb():
 def write_redis_aof():
     data = request.get_json() or {}
     message = data.get('message', 'Hello from redis aof')
-    # Push the message onto a Redis list called 'queue_aof'
     redis_aof.lpush('queue_aof', message)
     return jsonify({'status': 'success', 'queue': 'redis_aof', 'message': message})
 
