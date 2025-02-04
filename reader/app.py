@@ -5,7 +5,6 @@ import os
 
 app = Flask(__name__)
 
-# Get connection settings from environment or use defaults
 BEANSTALKD_HOST = os.environ.get("BEANSTALKD_HOST", "beanstalkd")
 BEANSTALKD_PORT = int(os.environ.get("BEANSTALKD_PORT", 11300))
 
@@ -15,7 +14,6 @@ REDIS_RDB_PORT = int(os.environ.get("REDIS_RDB_PORT", 6379))
 REDIS_AOF_HOST = os.environ.get("REDIS_AOF_HOST", "redis-aof")
 REDIS_AOF_PORT = int(os.environ.get("REDIS_AOF_PORT", 6379))
 
-# Initialize connections
 beanstalk = beanstalkc.Connection(host=BEANSTALKD_HOST, port=BEANSTALKD_PORT)
 redis_rdb = redis.Redis(host=REDIS_RDB_HOST, port=REDIS_RDB_PORT)
 redis_aof = redis.Redis(host=REDIS_AOF_HOST, port=REDIS_AOF_PORT)

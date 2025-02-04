@@ -30,7 +30,14 @@
    The `siege` directory contains three files to test the performance of each queue system. For example, to run a test for beanstalkd:
 
    ```bash
-   siege -f siege/beanstalkd.siege
-   siege -f siege/redis_rdb.siege
-   siege -f siege/redis_aof.siege
+   siege --content-type "application/json" -f siege/beanstalkd.siege -t30s -c100
+   siege --content-type "application/json" -f siege/redis_aof.siege -t30s -c100
+   siege --content-type "application/json" -f siege/redis_rdb.siege -t30s -c100
    ```
+
+   **Test Results (number of transactions per 30 seconds)**
+   | | 10 users | 100 users |
+   |:----------------|:----------------:|:----------------:|
+   |Beanstalk |12917 | 14491 |
+   |Redis append only (save on every write)| 21612 | 18806 |
+   |Redis snapshots (save every 10 seconds) | 19768 | 21413 |
