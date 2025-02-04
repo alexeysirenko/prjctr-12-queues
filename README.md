@@ -3,7 +3,7 @@
    Run the following command in the project root directory:
 
    ```bash
-   docker-compose up --build
+   docker-compose up --build -d
    ```
 
 2. **Test the Endpoints:**
