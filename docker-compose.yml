@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  beanstalkd:
+    image: schickling/beanstalkd
+    ports:
+      - "11300:11300"
+
+  redis-rdb:
+    image: redis:alpine
+    volumes:
+      - ./redis-rdb/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+
+  redis-aof:
+    image: redis:alpine
+    volumes:
+      - ./redis-aof/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    # Map container’s port 6379 to host port 6380 for clarity
+    ports:
+      - "6380:6379"
+
+  writer:
+    build: ./writer
+    ports:
+      - "5000:5000"
+    depends_on:
+      - beanstalkd
+      - redis-rdb
+      - redis-aof
+
+  reader:
+    build: ./reader
+    ports:
+      - "5001:5000"
+    depends_on:
+      - beanstalkd
+      - redis-rdb
+      - redis-aof

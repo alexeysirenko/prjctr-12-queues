@@ -1,0 +1,2 @@
+POST http://localhost:5000/write/redis_rdb {"message": "Test message for redis rdb"}
+GET http://localhost:5001/read/redis_rdb

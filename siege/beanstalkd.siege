@@ -1,0 +1,2 @@
+POST http://localhost:5000/write/beanstalkd {"message": "Test message for beanstalkd"}
+GET http://localhost:5001/read/beanstalkd

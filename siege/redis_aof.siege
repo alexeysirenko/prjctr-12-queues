@@ -1,0 +1,2 @@
+POST http://localhost:5000/write/redis_aof {"message": "Test message for redis aof"}
+GET http://localhost:5001/read/redis_aof
